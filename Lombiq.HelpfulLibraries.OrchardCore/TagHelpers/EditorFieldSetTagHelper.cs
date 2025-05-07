@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using OrchardCore.Modules;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Lombiq.HelpfulLibraries.OrchardCore.TagHelpers;
 
@@ -88,7 +85,7 @@ public class EditorFieldSetTagHelper : TagHelper
         AddBoolAttribute(attributes, IsReadOnly, "readonly");
         AddBoolAttribute(attributes, isRequired, "required");
 
-        if (InputType.EqualsOrdinalIgnoreCase("checkbox"))
+        if (InputType.Equals("checkbox", StringComparison.OrdinalIgnoreCase))
         {
             attributes[Class] = "custom-control-input";
             var checkbox = _htmlGenerator.GenerateCheckBox(
