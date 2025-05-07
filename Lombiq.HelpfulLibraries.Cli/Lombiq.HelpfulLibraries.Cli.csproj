@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
   <PropertyGroup>
     <Title>Lombiq Helpful Libraries - Command Line Libraries</Title>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CliWrap" Version="3.8.2" />
+    <PackageReference Include="CliWrap" />
   </ItemGroup>
 
   <ItemGroup>
