@@ -73,7 +73,7 @@ public static class ApplicationBuilderExtensions
                 [StyleSrc] = Self,
                 [FormAction] = Self,
                 // Needed for SVG images using "data:image/svg+xml,..." data URLs.
-                [ImgSrc] = $"{Self} {Data}",
+                [ImgSrc] = $"{Self} {Lombiq.HelpfulLibraries.AspNetCore.Security.ContentSecurityPolicyDirectives.CommonValues.Data}",
                 // Modern sites shouldn't need <object>, <embed>, and <applet> elements.
                 [ObjectSrc] = None,
                 // Necessary to prevent clickjacking (https://developer.mozilla.org/en-US/docs/Glossary/Clickjacking).
