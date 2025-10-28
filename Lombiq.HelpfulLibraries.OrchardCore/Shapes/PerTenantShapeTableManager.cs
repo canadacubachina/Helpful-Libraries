@@ -118,8 +118,9 @@ public class PerTenantShapeTableManager : IShapeTableManager
             .GroupBy(shapeDescriptor => shapeDescriptor.Value.ShapeType, StringComparer.OrdinalIgnoreCase)
             .Select(group => new ShapeDescriptorIndex(
                 shapeType: group.Key,
-                alterationKeys: group.Select(kv => kv.Key),
-                descriptors: concurrentShapeDescriptors
+                alterations: group.Select(kv => kv.Value)
+            //alterationKeys: group.Select(kv => kv.Key),
+            //descriptors: concurrentShapeDescriptors
             ))
             .ToList();
 
