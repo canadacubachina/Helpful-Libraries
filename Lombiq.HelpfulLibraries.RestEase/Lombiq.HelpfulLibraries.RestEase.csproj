@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <!-- <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*</DefaultItemExcludes>
-  </PropertyGroup>
+  </PropertyGroup> -->
 
   <PropertyGroup>
     <Title>Lombiq Helpful Libraries - RestEase Libraries for Orchard Core</Title>
