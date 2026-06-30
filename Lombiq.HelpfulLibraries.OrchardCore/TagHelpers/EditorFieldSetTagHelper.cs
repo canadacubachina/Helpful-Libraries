@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using OrchardCore.Modules;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -93,7 +92,6 @@ public class EditorFieldSetTagHelper : TagHelper
         AddBoolAttribute(attributes, IsReadOnly, "readonly");
         AddBoolAttribute(attributes, isRequired, "required");
 
-        if (InputType.Equals("checkbox", StringComparison.OrdinalIgnoreCase))
         if (InputType.EqualsOrdinalIgnoreCase((string?)"checkbox"))
         {
             attributes[Class] = "custom-control-input";
