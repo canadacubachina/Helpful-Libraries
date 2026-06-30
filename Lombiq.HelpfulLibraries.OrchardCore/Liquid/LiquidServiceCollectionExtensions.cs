@@ -1,4 +1,5 @@
 using Fluid;
+using Fluid.Ast;
 using Fluid.Values;
 using Lombiq.HelpfulLibraries.OrchardCore.Liquid;
 using OrchardCore.DisplayManagement.Liquid;
@@ -54,7 +55,51 @@ public static class LiquidServiceCollectionExtensions
                 {
                     var provider = ((LiquidTemplateContext)context).Services;
                     var service = provider.GetKeyedService<ILiquidParserTag>(tagName);
-                    return service.WriteToAsync(arguments, writer, encoder, context);
+                    return service?.WriteToAsync(arguments, writer, encoder, context) ?? new(Completion.Normal);
                 })));
     }
+
+    /// <summary>
+    /// Configures the <see cref="LiquidViewOptions"/> with an additional parser block.
+    /// </summary>
+    public static IServiceCollection AddLiquidParserBlock<T>(this IServiceCollection services, string blockName)
+        where T : class, ILiquidParserBlock
+    {
+        services.AddKeyedScoped<ILiquidParserBlock, T>(blockName);
+
+        return services.Configure<LiquidViewOptions>(options =>
+            options.LiquidViewParserConfiguration.Add(parser => parser.RegisterParserBlock(
+                blockName,
+                parser.ArgumentsListParser,
+                (arguments, statements, writer, encoder, context) =>
+                {
+                    var provider = ((LiquidTemplateContext)context).Services;
+                    var service = provider.GetKeyedService<ILiquidParserBlock>(blockName);
+                    return service?.WriteToAsync(arguments, statements, writer, encoder, context) ?? new(Completion.Normal);
+                })));
+    }
+
+    /// <summary>
+    /// Configures the <see cref="LiquidViewOptions"/> with an additional tag that takes no arguments.
+    /// </summary>
+    public static IServiceCollection AddLiquidEmptyTag<T>(this IServiceCollection services, string tagName)
+        where T : class, ILiquidParserTag
+    {
+        services.AddKeyedScoped<ILiquidParserTag, T>(tagName);
+
+        return services.Configure<LiquidViewOptions>(options =>
+            options.LiquidViewParserConfiguration.Add(parser => parser.RegisterEmptyTag(
+                tagName,
+                async (writer, encoder, context) =>
+                {
+                    var provider = ((LiquidTemplateContext)context).Services;
+
+                    return provider.GetKeyedService<ILiquidParserTag>(tagName) is { } service
+                        ? await service.WriteToAsync([], writer, encoder, context)
+                        : Completion.Normal;
+                })));
+    }
+
+    public static IServiceCollection AddDisplayChildrenLiquidFilter(this IServiceCollection services) =>
+        services.AddLiquidFilter<DisplayChildrenLiquidFilter>("display-children");
 }

@@ -17,11 +17,27 @@ public class TaxonomyHelper : ITaxonomyHelper
         _contentManager = contentManager;
     }
 
-    public async Task<ContentItem> GetTermContentItemByTaxonomyAliasAsync(string alias, string termId) =>
-        await _contentHandleManager.GetContentItemIdAsync($"alias:{alias}") is { } contentItemId &&
-        await _contentManager.GetAsync(contentItemId) is { } contentItem
-            ? contentItem.As<TaxonomyPart>()?.Terms?.Find(term => term.ContentItemId == termId)
-            : null;
+    public async Task<ContentItem?> GetTermContentItemByTaxonomyAliasAsync(string alias, string termId) =>
+        (await GetTermsOfTaxonomyByAliasAsync(alias, [termId])).FirstOrDefault();
+
+    public async Task<IEnumerable<ContentItem>> GetTermsOfTaxonomyByIdAsync(string taxonomyId, IEnumerable<string>? termIds)
+    {
+        if (string.IsNullOrWhiteSpace(taxonomyId) ||
+            await _contentManager.GetAsync(taxonomyId) is not { } contentItem)
+        {
+            return [];
+        }
+
+        var ids = termIds?.AsList();
+        return ids is null
+            ? GetAllChildren(contentItem)
+            : GetSelected(contentItem, ids);
+    }
+
+    public async Task<IEnumerable<ContentItem>> GetTermsOfTaxonomyByAliasAsync(string taxonomyAlias, IEnumerable<string>? termIds) =>
+        await GetTermsOfTaxonomyByIdAsync(
+            await _contentHandleManager.GetContentItemIdAsync($"alias:{taxonomyAlias}"),
+            termIds);
 
     /// <summary>
     /// Returns all child content items in a taxonomy tree.
@@ -32,7 +48,7 @@ public class TaxonomyHelper : ITaxonomyHelper
     /// empty as long as  <paramref name="contentItem"/> isn't <see langword="null"/>.
     /// </param>
     /// <returns>An unsorted list of all child items.</returns>
-    public static IList<ContentItem> GetAllChildren(ContentItem contentItem, bool includeSelf = false)
+    public static IList<ContentItem> GetAllChildren(ContentItem? contentItem, bool includeSelf = false)
     {
         var results = new List<ContentItem>();
         if (contentItem == null) return results;
@@ -47,4 +63,11 @@ public class TaxonomyHelper : ITaxonomyHelper
 
         return results;
     }
+
+    /// <summary>
+    /// Returns the child content items in a taxonomy tree with the IDs listed in <paramref name="selectedIds"/>.
+    /// </summary>
+    public static IEnumerable<ContentItem> GetSelected(ContentItem contentItem, ICollection<string> selectedIds) =>
+        GetAllChildren(contentItem)
+            .Where(term => selectedIds.Contains(term.ContentItemId));
 }

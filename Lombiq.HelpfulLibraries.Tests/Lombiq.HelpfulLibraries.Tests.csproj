@@ -10,16 +10,16 @@
     <SourceGeneratorLocation Condition=" '$(Configuration)' != 'Debug' ">
       $(SolutionDir)src\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.SourceGenerators\bin\Release\netstandard2.0\Lombiq.HelpfulLibraries.SourceGenerators.dll
     </SourceGeneratorLocation>
-  </PropertyGroup> 
+  </PropertyGroup>
 
   <Target Name="CustomBeforeCompile" BeforeTargets="Compile">
     <MSBuild Condition="!Exists('$(SourceGeneratorLocation)')" Projects="..\Lombiq.HelpfulLibraries.SourceGenerators\Lombiq.HelpfulLibraries.SourceGenerators.csproj" />
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="xunit.v3" Version="2.0.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="package.json" />
+    <AdditionalFiles Include="*-sample.json" />
   </ItemGroup>
 
   <ItemGroup>

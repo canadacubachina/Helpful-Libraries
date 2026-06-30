@@ -3,6 +3,7 @@
   <PropertyGroup>
     <!--<TargetFramework>net8.0</TargetFramework>-->
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*</DefaultItemExcludes>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -23,11 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <PackageReference Include="linq2db" />
     <!--<PackageReference Include="OrchardCore.Data.YesSql" Version="2.1.0" />-->
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GuangCore\GuangCore.TopRef\GuangCore.TopRef.csproj" />
+
   </ItemGroup>
 </Project>

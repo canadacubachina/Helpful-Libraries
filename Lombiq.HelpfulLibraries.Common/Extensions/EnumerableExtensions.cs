@@ -1,5 +1,3 @@
-#nullable enable
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -186,7 +184,6 @@ public static class EnumerableExtensions
     /// the items that are not null.
     /// </summary>
     public static IEnumerable<TOut> SelectWhere<TIn, TOut>(this IEnumerable<TIn> collection, Func<TIn, TOut?> select)
-        where TOut : notnull
     {
         foreach (var item in collection)
         {
@@ -297,16 +294,15 @@ public static class EnumerableExtensions
     /// A simple conditional enumeration where the items are <see langword="yield"/> ed from the <paramref
     /// name="collection"/> if the <paramref name="negativePredicate"/> returns <see langword="false"/>.
     /// </summary>
-    public static IEnumerable<T> WhereNot<T>(this IEnumerable<T> collection, Func<T, bool> negativePredicate)
-    {
-        foreach (var item in collection)
-        {
-            if (!negativePredicate(item))
-            {
-                yield return item;
-            }
-        }
-    }
+    public static IEnumerable<T> WhereNot<T>(this IEnumerable<T> collection, Func<T, bool> negativePredicate) =>
+        collection.Where(item => !negativePredicate(item));
+
+    /// <summary>
+    /// Filters out the <see langword="null"/> or whitespace elements of the <paramref name="collection"/>. The
+    /// resulting collection's elements are marked not null.
+    /// </summary>
+    public static IEnumerable<string> WhereNotNullOrWhiteSpace(this IEnumerable<string?> collection) =>
+        collection.WhereNot(string.IsNullOrWhiteSpace).Cast<string>();
 
     ///// <summary>
     ///// Filters the elements of the <paramref name="collection"/> if they return <see langword="false"/> when evaluated
@@ -459,5 +455,26 @@ public static class EnumerableExtensions
         }
 
         return (left, right);
+    }
+
+    /// <summary>
+    /// Returns a new list of an exact <paramref name="length"/>. If the <paramref name="source"/> is longer, the first
+    /// items are used until the new list is filled. If the <paramref name="source"/> is shorter, the remaining items
+    /// are left as <see langword="default"/>.
+    /// </summary>
+    public static IList<T> TakeExactly<T>(this IEnumerable<T> source, int length)
+    {
+        var result = new T[length];
+
+        var index = 0;
+        foreach (var item in source)
+        {
+            if (index >= length) return result;
+
+            result[index] = item;
+            index++;
+        }
+
+        return result;
     }
 }
