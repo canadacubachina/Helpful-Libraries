@@ -1,27 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+<Project>
   <PropertyGroup>
     <!--<TargetFramework>net8.0</TargetFramework>-->
-    <DefaultItemExcludes>$(DefaultItemExcludes);.git*</DefaultItemExcludes>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.Library.Sdk/Sdk/Import.props" />
+  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.props" Sdk="Lombiq.MSBuild.Library.Sdk" Version="1.0.1-alpha.21.osoe-925" />
+
   <PropertyGroup>
     <Title>Lombiq Helpful Libraries - LINQ to DB Libraries for Orchard Core</Title>
-    <Authors>Lombiq Technologies</Authors>
-    <Copyright>Copyright © 2011, Lombiq Technologies Ltd.</Copyright>
-    <Description>Lombiq Helpful Libraries - LINQ to DB Libraries for Orchard Core: With the help of this project you can write LINQ expressions and run them with a YesSql ISession extension method to query from the DB instead of writing plain SQL queries. Uses the LINQ to DB project. See the project website for detailed documentation.</Description>
+    <CopyrightYear>2011</CopyrightYear>
+    <DescriptionBody>With the help of this project you can write LINQ expressions and run them with a YesSql ISession extension method to query from the DB instead of writing plain SQL queries. Uses the LINQ to DB project. See the project website for detailed documentation.</DescriptionBody>
     <PackageTags>OrchardCore;Lombiq;YesSql;linq2db;LinqToDB</PackageTags>
-    <PackageIcon>NuGetIcon.png</PackageIcon>
     <RepositoryUrl>https://github.com/Lombiq/Helpful-Libraries</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Helpful-Libraries/blob/dev/Lombiq.HelpfulLibraries.LinqToDb/Readme.md</PackageProjectUrl>
-    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="Readme.md" />
-    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
-  </ItemGroup>
 
   <ItemGroup>
 
@@ -33,4 +26,7 @@
     <ProjectReference Include="..\..\src\GuangCore\GuangCore.TopRef\GuangCore.TopRef.csproj" />
 
   </ItemGroup>
+
+  <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.Library.Sdk/Sdk/Import.targets" />
+  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.targets" Sdk="Lombiq.MSBuild.Library.Sdk" Version="1.0.1-alpha.21.osoe-925" />
 </Project>
