@@ -28,10 +28,10 @@ public static class HostingDefaultsOrchardCoreBuilderExtensions
 
         ocSection.GetSection("OrchardCore_Localization_CultureOptions").AddValueIfKeyNotExists("IgnoreSystemSettings", "true");
 
-        var shellsDatabaseSection = ocSection.GetSection("OrchardCore_Shells_Database");
+        //var shellsDatabaseSection = ocSection.GetSection("OrchardCore_Shells_Database");
 
-        shellsDatabaseSection.AddValueIfKeyNotExists("DatabaseProvider", "SqlConnection");
-        shellsDatabaseSection.AddValueIfKeyNotExists("TablePrefix", "Shells");
+        //shellsDatabaseSection.AddValueIfKeyNotExists("DatabaseProvider", "SqlConnection");
+        //shellsDatabaseSection.AddValueIfKeyNotExists("TablePrefix", "Shells");
 
         ocSection.GetSection("OrchardCore_Tenants").AddValueIfKeyNotExists("TenantRemovalAllowed", "true");
 
@@ -72,7 +72,7 @@ public static class HostingDefaultsOrchardCoreBuilderExtensions
         {
             logLevelSection.AddValueIfKeyNotExists("Microsoft.AspNetCore", "Warning");
 
-            ocSection.AddValueIfKeyNotExists("DatabaseProvider", "SqlConnection");
+            //ocSection.AddValueIfKeyNotExists("DatabaseProvider", "SqlConnection");
 
             // Elastic Cloud configuration if none is provided. The Url and Password are still needed.
             if (elasticSearchSection["ConnectionType"] == null &&
