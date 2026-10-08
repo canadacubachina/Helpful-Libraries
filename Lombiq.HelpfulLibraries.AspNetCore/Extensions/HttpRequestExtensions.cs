@@ -1,7 +1,7 @@
-using Lombiq.HelpfulLibraries.Common.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -32,8 +32,10 @@ public static class HttpRequestExtensions
         if (queryString.StartsWith('?')) queryString = queryString[1..];
 
         var pageQuery = string.IsNullOrEmpty(queryString)
-            ? StringHelper.CreateInvariant($"{key}={value}")
-            : StringHelper.CreateInvariant($"&{key}={value}");
+#pragma warning disable MA0185 // doesn't apply: value is an arbitrary object that can hold culture-sensitive data at runtime.
+            ? string.Create(CultureInfo.InvariantCulture, $"{key}={value}")
+            : string.Create(CultureInfo.InvariantCulture, $"&{key}={value}");
+#pragma warning restore MA0185
         return $"{request.PathBase}{request.Path}?{queryString}{pageQuery}";
     }
 

@@ -1,4 +1,3 @@
-using Lombiq.HelpfulLibraries.Common.Utilities;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -13,7 +12,7 @@ public static class EnumExtensions
     /// </summary>
     public static InvalidOperationException UnknownEnumException<T>(this T other)
         where T : Enum =>
-        new(StringHelper.CreateInvariant($"Unknown {other.GetType().Name}: '{other}'"));
+        new($"Unknown {other.GetType().Name}: '{other}'");
 
     /// <summary>
     /// Attempts to retrieve an <see cref="Enum"/> object's <see cref="DisplayAttribute.Name"/> value.
