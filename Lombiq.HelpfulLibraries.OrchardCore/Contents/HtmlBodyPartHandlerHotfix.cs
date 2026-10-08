@@ -23,7 +23,7 @@ public class HtmlBodyPartHandlerHotfix : ContentPartHandler<HtmlBodyPart>
         ILiquidTemplateManager liquidTemplateManager,
         HtmlEncoder htmlEncoder,
         IHtmlSanitizerService htmlSanitizerService) =>
-        _handler = new(contentDefinitionManager, shortcodeService, liquidTemplateManager, htmlEncoder, htmlSanitizerService);
+        _handler = new(contentDefinitionManager, shortcodeService, liquidTemplateManager, htmlEncoder);//, htmlSanitizerService);
 
     public override Task GetContentItemAspectAsync(ContentItemAspectContext context, HtmlBodyPart part) =>
         _handler.GetContentItemAspectAsync(context, part);
